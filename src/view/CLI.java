@@ -32,6 +32,7 @@ public class CLI
 	{
 		m_streamIn  = in;
 		m_streamOut = out;
+		m_shutDown  = false;
 		m_commandContainer = commandConatinerToHandle;
 	}
 	
@@ -53,12 +54,22 @@ public class CLI
 				  // gets strings until the user will type "exit" string
 				  try 
 				  {
-					  System.out.println("New command to do?");
-					  while((newLine = m_streamIn.readLine()) != "exit")
+					  while(m_shutDown == false)
 					  {
-						 System.out.println("New command to do?");
+						 System.out.println("What do you want to do?");
+						 newLine = m_streamIn.readLine();
 						 Command matchCommand;
-						 if ((matchCommand = m_commandContainer.get(newLine.substring(0, newLine.indexOf(' ')))) != null)
+						 
+						 // exit need special handle, because it doesn't has args
+						 if (newLine.equals("exit"))
+						 {
+							 if ((matchCommand = m_commandContainer.get(newLine)) != null)
+							 {
+								 matchCommand.doCommand("");
+							 }
+						 }
+						 
+						 else if ((matchCommand = m_commandContainer.get(newLine.substring(0, newLine.indexOf(' ')))) != null)
 						 {
 							 // remove the command name, send only the args after it
 							 matchCommand.doCommand(newLine.substring(newLine.indexOf(' ') + 1));
@@ -81,12 +92,22 @@ public class CLI
 		  }).start();
 	}
 	
+	/**
+	 * close view's issues
+	 */
+	public void shutDown()
+	{
+		m_shutDown = true;
+	}
+	
 	/********************** MEMBERS **********************/
 	
 	/** Streams - in and out **/
 	BufferedReader m_streamIn;
 	PrintWriter    m_streamOut;
 	
+	boolean m_shutDown;
+		
 	/** The data base of possible commands to handle in this CLI **/
 	HashMap<String, Command> m_commandContainer;
 }

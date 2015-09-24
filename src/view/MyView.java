@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
 import controller.Command;
 import controller.Controller;
 import view.View;
@@ -37,7 +40,8 @@ public class MyView implements View
 	{
 		if (m_isInitialized != true)
 		{
-			System.out.println("MyView had not got its hash map from the controller yet!");
+			m_streamOut.println("MyView had not got its hash map from the controller yet!");
+			m_streamOut.flush();
 			return;
 		}
 		
@@ -55,11 +59,6 @@ public class MyView implements View
 		m_cli.Start();
 	}
 	
-	/**
-	 * Setter to the hash map data member
-	 * 
-	 * @param mapToSet - the map to set
-	 */
 	@Override
 	public void SetCommandsContainer(HashMap<String, Command> mapToSet)
 	{
@@ -77,9 +76,48 @@ public class MyView implements View
 	@Override
 	public void Print(String stringToPrint) 
 	{
-		System.out.println(stringToPrint);
+		m_streamOut.println(stringToPrint);
+		m_streamOut.flush();
 	}
 	
+	@Override
+	public void display3dMaze(Maze3d maze3dToDisplay) 
+	{
+		maze3dToDisplay.printMaze();
+		m_streamOut.flush();
+	}
+	
+	@Override
+	public void display2dMaze(int[][] maze2dToDisplay) 
+	{
+		for (int[] line : maze2dToDisplay)
+		{
+			for (int single : line)
+			{
+				m_streamOut.print(single);
+			}
+			m_streamOut.print("\n");
+		}
+		m_streamOut.print("\n");
+		m_streamOut.flush();
+	}
+
+	@Override
+	public void printSolution(Solution<Position> solutionToPrint)
+	{
+		solutionToPrint.printSolution();
+		m_streamOut.flush();
+	}
+	
+	@Override
+	public void shutDown() throws IOException 
+	{
+		m_streamOut.println("Bye Bye");
+		m_streamOut.flush();
+		m_cli.shutDown();
+		m_streamIn.close();
+		m_streamOut.close();
+	}
 	
 	/********************* Members *******************/
 	

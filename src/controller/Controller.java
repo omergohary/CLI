@@ -12,5 +12,10 @@ package controller;
 
 public interface Controller
 {
+	/**
+	 * This function gives an access to print to the outStream
+	 * 
+	 * @param stringToPrint - the string to print
+	 */
 	public void Print(String stringToPrint);
 }

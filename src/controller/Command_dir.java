@@ -20,10 +20,13 @@ import java.io.IOException;
 public class Command_dir implements Command
 {
 
+	/**
+	 * This function is responsible to show the current dir (folders and files)
+	 * @param args - the required user's dir
+	 */
 	@Override
 	public void doCommand(String args) throws IOException 
 	{
-		// "args" in this case must be the required user's dir
 		File dir = new File(args);
 
 		File[] files = dir.listFiles();
