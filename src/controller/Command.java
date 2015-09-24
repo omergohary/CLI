@@ -10,6 +10,8 @@
 
 package controller;
 
+import java.io.IOException;
+
 /**
  * This interface class represents a single command that uses in the CLI class
  */
@@ -17,7 +19,8 @@ public interface Command
 {
 	/**
 	 * Execute function that the command must implements
+	 * @throws IOException 
 	 */
-	public void doCommand();
+	public void doCommand(String args) throws IOException;
 	
 }

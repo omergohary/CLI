@@ -53,17 +53,21 @@ public class CLI
 				  // gets strings until the user will type "exit" string
 				  try 
 				  {
+					  System.out.println("New command to do?");
 					  while((newLine = m_streamIn.readLine()) != "exit")
 					  {
+						 System.out.println("New command to do?");
 						 Command matchCommand;
-						 if ((matchCommand = m_commandContainer.get(newLine)) != null)
+						 if ((matchCommand = m_commandContainer.get(newLine.substring(0, newLine.indexOf(' ')))) != null)
 						 {
-							 matchCommand.doCommand();
+							 // remove the command name, send only the args after it
+							 matchCommand.doCommand(newLine.substring(newLine.indexOf(' ') + 1));
 						 }
 						 
 						 else
 						 {
-							 System.out.println("Bad type of command");
+							 System.out.println("Bad type of command:");
+							 System.out.println(newLine.substring(0, newLine.indexOf(' ')));
 						 }
 					  }
 				  } 
