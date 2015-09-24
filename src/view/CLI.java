@@ -1,9 +1,25 @@
+/**
+ * @file CLI.java
+ * 
+ * @author Omer Gohary
+ * 
+ * @description This file is responsible on the command line interface of the project
+ * 				
+ * @date    24/09/2015
+ */
+
 package view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
+import controller.Command;
+
+/**
+ * This class represents the command line interface of our system
+ */
 public class CLI 
 {
 
@@ -12,10 +28,11 @@ public class CLI
 	 * @param in  - stream in
 	 * @param out - stream out
 	 */
-	CLI(BufferedReader in, PrintWriter out)
+	CLI(BufferedReader in, PrintWriter out, HashMap<String, Command> commandConatinerToHandle)
 	{
 		m_streamIn  = in;
 		m_streamOut = out;
+		m_commandContainer = commandConatinerToHandle;
 	}
 	
 	/**
@@ -38,10 +55,16 @@ public class CLI
 				  {
 					  while((newLine = m_streamIn.readLine()) != "exit")
 					  {
-						  switch(newLine)
-					  	  {
-							
-					  	  }
+						 Command matchCommand;
+						 if ((matchCommand = m_commandContainer.get(newLine)) != null)
+						 {
+							 matchCommand.doCommand();
+						 }
+						 
+						 else
+						 {
+							 System.out.println("Bad type of command");
+						 }
 					  }
 				  } 
 				  
@@ -59,4 +82,7 @@ public class CLI
 	/** Streams - in and out **/
 	BufferedReader m_streamIn;
 	PrintWriter    m_streamOut;
+	
+	/** The data base of possible commands to handle in this CLI **/
+	HashMap<String, Command> m_commandContainer;
 }
